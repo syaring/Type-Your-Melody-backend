@@ -9,31 +9,12 @@ const SVGtoPDF = require('svg-to-pdfkit');
 
 //s3 server
 const AWS = require('aws-sdk');
-const uuid = require('uuid');
-const multer = require('multer');
-const multerS3 = require('multer-s3');
+//const uuid = require('uuid');
 
 const s3 = new AWS.S3({
   accessKeyId: 'AKIAIKBM7V7Q4W63ZV4A',
   secretAccessKey: 'EujXerJbjU8xX/brqk3Oahq1wzYr9T/5H/tGkZxE'
 });
-
-// const upload = multer({
-//   storage: multerS3({
-//     s3: s3,
-//     bucket: 'type-your-melody',
-//     contentType: multerS3.AUTO_CONTENT_TYPE,
-//     metadata: function (req, file, cb) {
-//       console.log('metadata')
-//       cb(null, { fieldName: file.fieldname });
-//     },
-//     key: function (req, file, cb) {
-//       console.log(file, cb)
-//       const fileName = `${Date.now().toString()}-${file.originalname}.pdf`;
-//       cb(null, fileName);
-//     }
-//   })
-// });
 
 
 /* GET home page. */
