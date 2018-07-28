@@ -6,6 +6,7 @@
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "^2.282.1",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
@@ -16,8 +17,13 @@
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
+    "multer": "^1.3.1",
+    "multer-s3": "^2.7.0",
     "nodemon": "^1.18.3",
     "pdfkit": "^0.8.3",
-    "svg-to-pdfkit": "^0.1.7"
-  }
+    "svg-to-pdfkit": "^0.1.7",
+    "uuid": "^3.3.2"
+  },
+  "author": "serim kim",
+  "license": "ISC"
 }

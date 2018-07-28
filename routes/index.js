@@ -1,10 +1,39 @@
-var express = require('express');
-var router = express.Router();
-var cors = require('cors');
+const express = require('express');
+const router = express.Router();
+const cors = require('cors');
 
-var fs = require('file-system');
-var PDFDoc = require('pdfkit');
-var SVGtoPDF = require('svg-to-pdfkit');
+const fs = require('file-system');
+const PDFDoc = require('pdfkit');
+const SVGtoPDF = require('svg-to-pdfkit');
+
+
+//s3 server
+const AWS = require('aws-sdk');
+const uuid = require('uuid');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+
+const s3 = new AWS.S3({
+  accessKeyId: 'AKIAIKBM7V7Q4W63ZV4A',
+  secretAccessKey: 'EujXerJbjU8xX/brqk3Oahq1wzYr9T/5H/tGkZxE'
+});
+
+// const upload = multer({
+//   storage: multerS3({
+//     s3: s3,
+//     bucket: 'type-your-melody',
+//     contentType: multerS3.AUTO_CONTENT_TYPE,
+//     metadata: function (req, file, cb) {
+//       console.log('metadata')
+//       cb(null, { fieldName: file.fieldname });
+//     },
+//     key: function (req, file, cb) {
+//       console.log(file, cb)
+//       const fileName = `${Date.now().toString()}-${file.originalname}.pdf`;
+//       cb(null, fileName);
+//     }
+//   })
+// });
 
 
 /* GET home page. */
@@ -12,23 +41,38 @@ router.get('/', cors(), function(req, res, next) {
   res.render('index', { title: 'Expsress' });
 });
 
-router.post('/toPDF', cors(), function(req, res, next) {
+router.post('/toPDF', cors(), (req, res, next) => {
   var doc = new PDFDoc();
-  var stream = fs.createWriteStream('notes.pdf');
   var svg = req.body.tagData;
-
+  var stream = fs.createWriteStream('notes.pdf');
   SVGtoPDF(doc, svg, 0, 0);
+  
+  PDFDoc.prototype.addSVG = function (svg, x, y, options) {
+    return SVGtoPDF(this, svg, x, y, options), this;
+  }
 
-  stream.on('finish', function() {
-    console.log(fs.readFileSync('notes.pdf'))
-  });
+  doc.addSVG(svg, 0, 0);
 
-  doc.pipe(stream);
   doc.end();
-  // console.log(req.body.tagData);
 
-  res.status(200).json({
-    msg: "done"
+  var params = {
+    Key: `${Date.now().toString()}-notes.pdf`,
+    Body: doc,
+    Bucket: 'type-your-melody',
+    ContentType: 'application/pdf',
+    ACL: 'public-read'
+  }
+
+  s3.upload(params, function(err, data) {
+    if(err) {
+      res.status(400).json({
+        msg: "upload failed"
+      });
+    } else if(data) {
+      res.status(200).json({
+        url: data.Location
+      });
+    }
   });
 });
 
