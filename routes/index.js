@@ -5,8 +5,8 @@ const cors = require('cors');
 const fs = require('file-system');
 const PDFDoc = require('pdfkit');
 const SVGtoPDF = require('svg-to-pdfkit');
-
-
+const { BitlyClient } = require('bitly');
+const bitly = new BitlyClient('28c7710f28bd22f3010633ad2aa86f367f30f978', {});
 //s3 server
 const AWS = require('aws-sdk');
 //const uuid = require('uuid');
@@ -50,8 +50,14 @@ router.post('/toPDF', cors(), (req, res, next) => {
         msg: "upload failed"
       });
     } else if(data) {
-      res.status(200).json({
-        url: data.Location
+      bitly.shorten(data.Location)
+      .then(function(result) {
+        res.status(200).json({
+          url: result.url
+        }); 
+      })
+      .catch(function(error) {
+        console.error(error);
       });
     }
   });

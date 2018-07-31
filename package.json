@@ -8,6 +8,7 @@
   "dependencies": {
     "aws-sdk": "^2.282.1",
     "axios": "^0.18.0",
+    "bitly": "^6.0.8",
     "body-parser": "^1.18.3",
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.4",
