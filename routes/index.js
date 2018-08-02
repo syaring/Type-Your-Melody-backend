@@ -12,10 +12,9 @@ const AWS = require('aws-sdk');
 //const uuid = require('uuid');
 
 const s3 = new AWS.S3({
-  accessKeyId: 'AKIAIKBM7V7Q4W63ZV4A',
-  secretAccessKey: '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'
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_ACCESS_KEY_SECRET
 });
-
 
 /* GET home page. */
 router.get('/', cors(), function(req, res, next) {
