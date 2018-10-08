@@ -23,7 +23,7 @@ from 2018.07.24 ~ 2018.08.03
 - Server : Node.js (express)
 - etc : Firebase (Google Auth, Storage)
 - [Type Your Melody 바로가기](https://typeyourmelody.netlify.com/)
-- ~~2018.08.05 기준 Netlify, AWS로 배포상태 ~~
+- ~~2018.08.05 기준 Netlify, AWS로 배포상태~~
 - 2018.10.09 AWS 배포 종료
 
 
